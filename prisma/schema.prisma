@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,4 +5,75 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  admin
+  user
+
+  @@map("user_role")
+}
+
+enum UserStatus {
+  pending
+  approved
+  rejected
+
+  @@map("user_status")
+}
+
+model User {
+  id           String          @id
+  email        String          @unique
+  passwordHash String          @map("password_hash")
+  role         Role            @default(user)
+  status       UserStatus      @default(pending)
+  createdAt    DateTime        @default(now()) @map("created_at")
+  stories      Story[]
+  usage        UsageCounter[]
+
+  @@map("users")
+}
+
+model Story {
+  id        String   @id
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme     String
+  tone      String?
+  style     String
+  title     String
+  bodyJson  Json     @map("body_json")
+  createdAt DateTime @default(now()) @map("created_at")
+  assets    Asset[]
+
+  @@index([userId])
+  @@map("stories")
+}
+
+model Asset {
+  id          String   @id
+  storyId     String   @map("story_id")
+  story       Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  excerptText String   @map("excerpt_text")
+  startOffset Int      @map("start_offset")
+  endOffset   Int      @map("end_offset")
+  promptUsed  String   @map("prompt_used")
+  blobUrl     String   @map("blob_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([storyId])
+  @@map("assets")
+}
+
+model UsageCounter {
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  storiesUsed Int      @default(0) @map("stories_used")
+  imagesUsed  Int      @default(0) @map("images_used")
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("usage_counters")
 }
