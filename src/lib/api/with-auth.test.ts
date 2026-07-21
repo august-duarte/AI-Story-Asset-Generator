@@ -54,6 +54,7 @@ describe("withAuth", () => {
       sub: "user_1",
       email: "ada@example.com",
       role: "user",
+      status: "approved",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,
@@ -106,6 +107,7 @@ describe("withAuth", () => {
       sub: "missing_user",
       email: "gone@example.com",
       role: "user",
+      status: "approved",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,
@@ -126,6 +128,7 @@ describe("withAuth", () => {
       sub: "user_2",
       email: "pending@example.com",
       role: "user",
+      status: "pending",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,
@@ -153,6 +156,7 @@ describe("withAuth", () => {
       sub: "user_3",
       email: "member@example.com",
       role: "user",
+      status: "approved",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,
@@ -180,6 +184,7 @@ describe("withAuth", () => {
       sub: "admin_1",
       email: "admin@example.com",
       role: "admin",
+      status: "approved",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,

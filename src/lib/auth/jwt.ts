@@ -1,11 +1,12 @@
 import { SignJWT, jwtVerify } from "jose";
 
-import type { UserRole } from "@/types/user";
+import type { UserRole, UserStatus } from "@/types/user";
 
 export type TokenPayload = {
   sub: string;
   email: string;
   role: UserRole;
+  status: UserStatus;
 };
 
 const TOKEN_EXPIRATION = "7d";
@@ -24,6 +25,7 @@ export async function sign(payload: TokenPayload): Promise<string> {
   return new SignJWT({
     email: payload.email,
     role: payload.role,
+    status: payload.status,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setSubject(payload.sub)
@@ -38,7 +40,10 @@ export async function verify(token: string): Promise<TokenPayload> {
   if (
     typeof payload.sub !== "string" ||
     typeof payload.email !== "string" ||
-    (payload.role !== "admin" && payload.role !== "user")
+    (payload.role !== "admin" && payload.role !== "user") ||
+    (payload.status !== "pending" &&
+      payload.status !== "approved" &&
+      payload.status !== "rejected")
   ) {
     throw new Error("Invalid token payload");
   }
@@ -47,5 +52,6 @@ export async function verify(token: string): Promise<TokenPayload> {
     sub: payload.sub,
     email: payload.email,
     role: payload.role,
+    status: payload.status,
   };
 }

@@ -23,6 +23,7 @@ describe("jwt helpers", () => {
       sub: "user_1",
       email: "ada@example.com",
       role: "user",
+      status: "pending",
     };
 
     const token = await sign(payload);
@@ -35,6 +36,7 @@ describe("jwt helpers", () => {
       sub: "user_2",
       email: "grace@example.com",
       role: "admin",
+      status: "approved",
     };
 
     const token = await sign(payload);
@@ -47,6 +49,7 @@ describe("jwt helpers", () => {
       sub: "user_3",
       email: "alan@example.com",
       role: "user",
+      status: "approved",
     });
 
     const tampered = `${token.slice(0, -4)}xxxx`;
@@ -62,6 +65,7 @@ describe("jwt helpers", () => {
         sub: "user_4",
         email: "kathy@example.com",
         role: "user",
+        status: "pending",
       }),
     ).rejects.toThrow("JWT_SECRET is not set");
   });

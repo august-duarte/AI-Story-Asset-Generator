@@ -30,6 +30,7 @@ export async function POST(request: Request): Promise<Response> {
     sub: user.id,
     email: user.email,
     role: user.role,
+    status: user.status,
   });
   await setAuthCookie(token);
 

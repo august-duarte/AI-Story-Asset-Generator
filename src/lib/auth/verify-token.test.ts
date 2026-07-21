@@ -43,6 +43,7 @@ describe("verifyToken", () => {
       sub: "user_42",
       email: "ada@example.com",
       role: "user",
+      status: "approved",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,
@@ -57,6 +58,7 @@ describe("verifyToken", () => {
       sub: "user_7",
       email: "grace@example.com",
       role: "admin",
+      status: "approved",
     });
     headerStore.get.mockReturnValue(`Bearer ${token}`);
 
@@ -69,11 +71,13 @@ describe("verifyToken", () => {
       sub: "cookie_user",
       email: "cookie@example.com",
       role: "user",
+      status: "approved",
     });
     const headerToken = await sign({
       sub: "header_user",
       email: "header@example.com",
       role: "user",
+      status: "approved",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,

@@ -61,6 +61,7 @@ describe("GET /api/auth/me", () => {
       sub: "user_1",
       email: "ada@example.com",
       role: "user",
+      status: "pending",
     });
     cookieStore.get.mockReturnValue({
       name: AUTH_COOKIE_NAME,
